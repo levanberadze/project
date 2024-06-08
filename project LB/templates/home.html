@@ -1,7 +1,12 @@
 {% extends "base.html" %}
-{% block title %}
-Home page
-{% endblock %}
+
+{% block title %}Recipe Sharing - Home{% endblock %}
+
 {% block content %}
-<h1>Hello This is Home page</h1>
+<h1>Recipe Sharing</h1>
+<ul>
+    {% for recipe in recipes %}
+    <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
+    {% endfor %}
+</ul>
 {% endblock %}
