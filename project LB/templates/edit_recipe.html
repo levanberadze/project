@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Recipe</title>
+</head>
+<body>
+    <h1>Edit Recipe</h1>
+    <form method="POST">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" value="{{ recipe['title'] }}">
+        <br>
+        <label for="ingredients">Ingredients:</label>
+        <textarea id="ingredients" name="ingredients">{{ recipe['ingredients'] }}</textarea>
+        <br>
+        <label for="instructions">Instructions:</label>
+        <textarea id="instructions" name="instructions">{{ recipe['instructions'] }}</textarea>
+        <br>
+        <input type="submit" value="Update Recipe">
+    </form>
+    <a href="{{ url_for('home') }}">Back to home</a>
+</body>
+</html>

@@ -17,6 +17,7 @@ INSERT INTO recipes (title, ingredients, instructions) VALUES
 ('Pancakes', 'Flour, Eggs, Milk, Sugar', 'Mix all ingredients and cook on a griddle.'),
 ('Scrambled Eggs', 'Eggs, Butter, Salt', 'Whisk eggs, melt butter in a pan, cook eggs and stir.')
 ''')
+print("Created Table succesefully")
 
 conn.commit()
 conn.close()
