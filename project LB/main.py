@@ -46,7 +46,6 @@ def get_db_conn():
 def home():
     conn = get_db_conn()
     recipes = conn.execute('SELECT * FROM recipes').fetchall()
-    conn.close()
     return render_template("home.html", recipes=recipes)
 
 
@@ -82,19 +81,37 @@ def edit_recipe(recipe_id):
     conn = get_db_conn()
     recipe = conn.execute('SELECT * FROM recipes WHERE id = ?', (recipe_id,)).fetchone()
     if request.method == "POST":
-        title = request.form["title"]
-        ingredients = request.form["ingredients"]
-        instructions = request.form["instructions"]
         try:
+            title = request.form["title"]
+            ingredients = request.form["ingredients"]
+            instructions = request.form["instructions"]
             conn.execute('UPDATE recipes SET title = ?, ingredients = ?, instructions = ? WHERE id = ?',(title, ingredients, instructions, recipe_id))
-            conn.commit()
-            conn.close()
+            with sqlite3.connect('database.db') as conn:
+                cursor = conn.cursor()
+                cursor.execute("UPDATE recipes SET ='"+title+"', ingredients='"+ingredients+"', instructions='"+instructions+"' WHERE id="+id)
+
+                conn.commit()
+                msg = "Record successfully edited in the database"
             return redirect(url_for('home'))
         except:
             flash('ver sheicvala recepti')
             return redirect(url_for('home'))
     conn.close()
     return render_template("edit_recipe.html", recipe=recipe)
+
+
+@app.route('/delete_recipe/<int:recipe_id>', methods=["POST"])
+def delete_recipe(recipe_id):
+    try:
+        conn = get_db_conn()
+        conn.execute('DELETE FROM recipes WHERE id = ?', (recipe_id,))
+        conn.commit()
+        conn.close()
+        flash("Recipe deleted successfully")
+        return redirect(url_for('home'))
+    except:
+        flash("ver waishala")
+    return redirect(url_for('home'))
 
 
 @app.route('/login', methods=['GET', 'POST'])
